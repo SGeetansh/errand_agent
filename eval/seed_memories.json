@@ -1,0 +1,387 @@
+[
+  {
+    "fact": "preferred_area",
+    "value": "Koramangala",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 1
+  },
+  {
+    "fact": "alternate_area",
+    "value": "HSR Layout",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 2
+  },
+  {
+    "fact": "home_type",
+    "value": "3BHK Apartment",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 3
+  },
+  {
+    "fact": "building_name",
+    "value": "Sunrise Greens",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 4
+  },
+  {
+    "fact": "gate_entry_preference",
+    "value": "Gate 2 Visitor Entry",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 5
+  },
+  {
+    "fact": "service_lift_available",
+    "value": "Yes, Block B",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 6
+  },
+  {
+    "fact": "parking_spot",
+    "value": "Slot B-104",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 7
+  },
+  {
+    "fact": "preferred_time_weekdays",
+    "value": "mornings only (before 12pm)",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 8
+  },
+  {
+    "fact": "earliest_acceptable_time",
+    "value": "10:00 AM",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 9
+  },
+  {
+    "fact": "latest_acceptable_time",
+    "value": "7:00 PM",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 10
+  },
+  {
+    "fact": "weekend_preference",
+    "value": "Saturday afternoon preferred",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 11
+  },
+  {
+    "fact": "sunday_services_allowed",
+    "value": "No, only emergency calls",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 12
+  },
+  {
+    "fact": "preferred_plumber_name",
+    "value": "QuickFix Plumbing",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 13
+  },
+  {
+    "fact": "plumber_rating_threshold",
+    "value": "minimum 4.2 stars",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 14
+  },
+  {
+    "fact": "max_plumber_budget",
+    "value": "1500 INR",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 15
+  },
+  {
+    "fact": "pipe_material_note",
+    "value": "CPVC piping throughout apartment",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 16
+  },
+  {
+    "fact": "kitchen_tap_brand",
+    "value": "Kohler mixer tap",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 17
+  },
+  {
+    "fact": "master_bath_fitting",
+    "value": "Jaquar concealed valves",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 18
+  },
+  {
+    "fact": "guest_bath_problem",
+    "value": "Slow drain reported last month",
+    "provenance": "inferred",
+    "confirmed": 0,
+    "source_turn": 19
+  },
+  {
+    "fact": "water_purifier_brand",
+    "value": "Kent Grand Plus RO",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 20
+  },
+  {
+    "fact": "preferred_electrician_name",
+    "value": "Sparky Electrical Works",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 21
+  },
+  {
+    "fact": "electrician_preference",
+    "value": "same electrician as last time",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 22
+  },
+  {
+    "fact": "electrician_min_experience",
+    "value": "5 years minimum",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 23
+  },
+  {
+    "fact": "electrical_phase",
+    "value": "3-phase power supply",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 24
+  },
+  {
+    "fact": "main_mcb_location",
+    "value": "Foyer entrance box",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 25
+  },
+  {
+    "fact": "inverter_battery_model",
+    "value": "Luminous 150Ah Tubular",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 26
+  },
+  {
+    "fact": "ac_brand_living_room",
+    "value": "Daikin 1.5 Ton Inverter",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 27
+  },
+  {
+    "fact": "ac_brand_bedroom_1",
+    "value": "Mitsubishi Heavy 1.0 Ton",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 28
+  },
+  {
+    "fact": "ac_brand_bedroom_2",
+    "value": "Voltas 1.0 Ton Window AC",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 29
+  },
+  {
+    "fact": "preferred_ac_servicing_vendor",
+    "value": "CoolAir Services",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 30
+  },
+  {
+    "fact": "ac_servicing_frequency",
+    "value": "Every 6 months",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 31
+  },
+  {
+    "fact": "ac_gas_refill_history",
+    "value": "R32 gas topped up in April 2023",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 32
+  },
+  {
+    "fact": "preferred_payment_mode",
+    "value": "UPI / GPay on job completion",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 33
+  },
+  {
+    "fact": "cash_payment_accepted",
+    "value": "No cash on premises",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 34
+  },
+  {
+    "fact": "invoice_requirement",
+    "value": "Always require GST invoice via email",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 35
+  },
+  {
+    "fact": "preferred_language",
+    "value": "English or Hindi",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 36
+  },
+  {
+    "fact": "pet_at_home",
+    "value": "Friendly Golden Retriever (keep door closed)",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 37
+  },
+  {
+    "fact": "doorbell_working",
+    "value": "Doorbell ring is loud; knock gently if after 6pm",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 38
+  },
+  {
+    "fact": "do_not_disturb_hours",
+    "value": "1:00 PM to 3:00 PM on weekdays",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 39
+  },
+  {
+    "fact": "emergency_contact_name",
+    "value": "Pooja Saxena (Spouse)",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 40
+  },
+  {
+    "fact": "emergency_contact_phone",
+    "value": "+91-9876543210",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 41
+  },
+  {
+    "fact": "cleaning_service_frequency",
+    "value": "Deep cleaning quarterly",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 42
+  },
+  {
+    "fact": "carpentry_preference",
+    "value": "Prefers seasoned teak repair specialist",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 43
+  },
+  {
+    "fact": "pest_control_frequency",
+    "value": "Herbal gel every 4 months",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 44
+  },
+  {
+    "fact": "painting_color_code",
+    "value": "Asian Paints Royal White 001",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 45
+  },
+  {
+    "fact": "water_supply_timing",
+    "value": "Cauvery water available 6am to 9am",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 46
+  },
+  {
+    "fact": "geyser_brand",
+    "value": "AO Smith 25L Storage",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 47
+  },
+  {
+    "fact": "washing_machine_model",
+    "value": "Bosch 7kg Front Load",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 48
+  },
+  {
+    "fact": "refrigerator_brand",
+    "value": "Samsung 450L Frost Free",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 49
+  },
+  {
+    "fact": "inferred_budget_sensitivity",
+    "value": "Values quality over cheapest price",
+    "provenance": "inferred",
+    "confirmed": 0,
+    "source_turn": 50
+  },
+  {
+    "fact": "inferred_promptness_preference",
+    "value": "Prefers technician arriving 10 mins early",
+    "provenance": "inferred",
+    "confirmed": 0,
+    "source_turn": 51
+  },
+  {
+    "fact": "inferred_shoe_cover_preference",
+    "value": "Prefers technicians wearing shoe covers",
+    "provenance": "inferred",
+    "confirmed": 0,
+    "source_turn": 52
+  },
+  {
+    "fact": "past_bad_experience_note",
+    "value": "Do not book Citywide Plumbers (poor cleanup)",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 53
+  },
+  {
+    "fact": "security_gate_code",
+    "value": "OTP required via MyGate app",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 54
+  },
+  {
+    "fact": "work_from_home_schedule",
+    "value": "WFH on Mondays and Fridays",
+    "provenance": "explicit",
+    "confirmed": 1,
+    "source_turn": 55
+  }
+]
