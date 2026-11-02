@@ -1,0 +1,28 @@
+[project]
+name = "agentic-orange"
+version = "0.1.0"
+description = "Errand Agent - chat-based home service errand assistant"
+authors = [
+    { name = "Geetansh Saxena", email = "saxenageetansh1@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.27",
+    "pydantic>=2.0",
+    "pytest>=8.0",
+    "pytest-timeout>=2.0",
+    "pyyaml>=6.0",
+    "tiktoken>=0.7",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
