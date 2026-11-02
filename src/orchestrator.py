@@ -77,6 +77,23 @@ class Orchestrator:
         self.active_grant: ApprovalGrant | None = None
         self.last_search_results: list[ProviderSummary] = []
 
+        orig_transition = self.sm.transition
+
+        def _logged_transition(to_state: State, trigger: str = "", **context: Any) -> State:
+            from_val = self.sm.current_state.value
+            target_val = to_state.value if isinstance(to_state, State) else str(to_state)
+            new_state = orig_transition(to_state, trigger=trigger, **context)
+            self.tracer.log_event(
+                "state_transition",
+                turn_id=self.turn_id,
+                from_state=from_val,
+                to_state=target_val,
+                trigger=trigger,
+            )
+            return new_state
+
+        self.sm.transition = _logged_transition  # type: ignore[assignment]
+
     def run_turn(self, user_input: str) -> str:
         """Process a single conversational turn from the user.
 
@@ -154,13 +171,6 @@ class Orchestrator:
             return None
 
         self.sm.transition(State.PROACTIVE, trigger="provider_cancelled")
-        self.tracer.log_event(
-            "state_transition",
-            turn_id=self.turn_id,
-            from_state="IDLE",
-            to_state="PROACTIVE",
-            trigger="provider_cancelled",
-        )
 
         outcome = self.proactive_handler.handle(event, user_id=self.user_id)
         candidates = outcome["candidates"]

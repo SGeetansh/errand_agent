@@ -104,3 +104,14 @@ This document logs the interaction history, architectural reasoning, and impleme
   - Authored 1-page `DESIGN_NOTE.md` with Mermaid state diagram and annotated S10 trace.
   - Authored comprehensive `README.md` with setup, CLI instructions, and architecture guide.
   - Compiled `AI_TRANSCRIPT.md`.
+- **Commit:** `aa740c1 docs(milestone-11): deliverables, 1-page design note, bug log, and README`
+
+### Milestone 12: Streamlit Side-by-Side UI & AppTest Suite
+- **Actions:**
+  - Added `streamlit` under optional group `[project.optional-dependencies] ui = ["streamlit>=1.66.1"]`.
+  - Defined reusable evaluation scenario preset catalog in `eval/harness.py` (`SCENARIO_PRESETS`).
+  - Implemented thin view layer in `ui/app.py` featuring side-by-side split screen (Chat column + 5 Observability tabs: Trace, Context, Memory, Bookings, WAL).
+  - Implemented simulation controls: "Crash + Restart" with startup reconciliation, "Trigger Provider Cancellation" with unprompted notification, and quick-fill confirmation buttons.
+  - Minimal `src/` enhancement: wrapped `StateMachine.transition` in `Orchestrator.__init__` to log structured `state_transition` events to `Tracer`.
+  - Added UI smoke test suite in `tests/test_ui_smoke.py` using `streamlit.testing.v1.AppTest` covering app boot, happy path booking, trace transitions, and crash restart idempotency.
+  - Updated `README.md` with UI setup and usage instructions. All 104 tests pass.

@@ -78,6 +78,43 @@ uv run python -m src.cli --model ollama
 
 ---
 
+## 🖥️ Streamlit UI (Manual Testing & Demo Recording)
+
+A side-by-side Streamlit interface designed for manual testing and video recording. It serves as a thin view layer over the Orchestrator with zero duplicate business logic.
+
+### 1. Installation & Dependencies
+The UI dependencies are isolated under an optional group so core tests and CI remain lean:
+```bash
+uv sync --extra ui
+```
+
+### 2. Launching the App
+```bash
+uv run streamlit run ui/app.py
+```
+
+### 3. Interface Overview
+- **Sidebar**:
+  - **Model Selector**: Switch between `scripted` and `ollama` (`qwen2.5:7b`) with live server reachability detection.
+  - **Scenario Presets**: Dropdown populated from eval harness configs (Happy path, Timeout recovery, Price drift, Slot conflict, Transient 503, Prompt injection, Proactive cancellation). Automatically creates an isolated temporary SQLite database on every preset switch.
+  - **Manual Overrides**: Override outcome simulation, price drift amount, review injection, and random seeds.
+  - **Special Actions**:
+    - **New Session**: Clean reset with a fresh temporary database.
+    - **Crash + Restart**: Discards the in-memory orchestrator, recreates it from the same SQLite disk file, and triggers startup reconciliation mid-booking.
+    - **Trigger Provider Cancellation**: Enqueues an upstream cancellation event for the latest booking and triggers the proactive replacement flow unprompted.
+  - **Live Status**: State machine state, remaining turns, remaining tool calls, wall-clock timeout countdown.
+- **Left Column (Chat)**:
+  - Interactive multi-turn chat (`st.chat_input` and `st.chat_message`).
+  - Read-only **Pending Action Card** when in `AWAITING_APPROVAL` with quick-fill `Insert 'yes'` and `Insert 'no'` buttons that route through normal confirmation detection.
+- **Right Column (Observability Tabs)**:
+  - **Trace**: Live tail of JSONL execution events with color-coded badges and full raw `.jsonl` download.
+  - **Context**: Per-turn `ContextManifest` showing token allocations against the 4000-token budget and memory inclusion/exclusion reasoning.
+  - **Memory**: Interactive table of stored facts with in-place correction and forgetting. Includes a dedicated greyed-out section displaying facts never sent to the model (unconfirmed inferred and forgotten facts).
+  - **Bookings**: Real-time view of `list_bookings` output.
+  - **WAL**: Dump of SQLite `intent_log` showing idempotency keys, actions, and status updates.
+
+---
+
 ## 🧪 Running Tests & Evaluation Suite
 
 ### Run All Unit and Integration Tests (100 Tests)
