@@ -65,33 +65,51 @@ VALID_TRANSITIONS: set[tuple[State, State]] = {
     # AWAITING_APPROVAL transitions
     (State.AWAITING_APPROVAL, State.HOLDING),
     (State.AWAITING_APPROVAL, State.COMPARING),
+    (State.AWAITING_APPROVAL, State.CANCELLING),
+    (State.AWAITING_APPROVAL, State.RESCHEDULING),
     (State.AWAITING_APPROVAL, State.FAILED),
+    (State.AWAITING_APPROVAL, State.IDLE),
     # HOLDING transitions
     (State.HOLDING, State.EXECUTING),
     (State.HOLDING, State.AWAITING_APPROVAL),
     (State.HOLDING, State.FAILED),
+    (State.HOLDING, State.IDLE),
     # EXECUTING transitions
     (State.EXECUTING, State.VERIFYING),
     (State.EXECUTING, State.DONE),
     (State.EXECUTING, State.SEARCHING),
     (State.EXECUTING, State.HOLDING),
     (State.EXECUTING, State.FAILED),
+    (State.EXECUTING, State.IDLE),
     # VERIFYING transitions
     (State.VERIFYING, State.DONE),
     (State.VERIFYING, State.SEARCHING),
     (State.VERIFYING, State.FAILED),
+    (State.VERIFYING, State.IDLE),
     # CANCELLING transitions
+    (State.CANCELLING, State.AWAITING_APPROVAL),
     (State.CANCELLING, State.CANCELLING),
     (State.CANCELLING, State.DONE),
     (State.CANCELLING, State.FAILED),
+    (State.CANCELLING, State.IDLE),
     # RESCHEDULING transitions
     (State.RESCHEDULING, State.AWAITING_APPROVAL),
     (State.RESCHEDULING, State.RESCHEDULING),
     (State.RESCHEDULING, State.DONE),
     (State.RESCHEDULING, State.FAILED),
+    (State.RESCHEDULING, State.IDLE),
     # PROACTIVE transitions
     (State.PROACTIVE, State.AWAITING_APPROVAL),
     (State.PROACTIVE, State.FAILED),
+    (State.PROACTIVE, State.IDLE),
+    # DONE transitions
+    (State.DONE, State.IDLE),
+    # FAILED transitions
+    (State.FAILED, State.IDLE),
+    # CLARIFYING / SEARCHING / COMPARING to IDLE
+    (State.CLARIFYING, State.IDLE),
+    (State.SEARCHING, State.IDLE),
+    (State.COMPARING, State.IDLE),
 }
 
 

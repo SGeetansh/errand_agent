@@ -108,12 +108,26 @@ class Orchestrator:
         if mem_response:
             return self._finalize_turn(mem_response)
 
-        # 4. Handle awaiting approval state deterministically via application code
+        # 4. Handle completed errand state
+        if self.sm.current_state == State.DONE:
+            decision = detect_confirmation(user_input)
+            if decision in ("confirmed", "ambiguous") or any(w in user_input.lower() for w in ["yes", "ok", "confirm", "thanks", "thank you"]):
+                return self._finalize_turn("Your booking is already confirmed and active. Let me know if you need any other assistance!")
+            self.sm.transition(State.IDLE, trigger="new_task_after_done")
+            self.slots = ErrandSlots()
+            self.proposed_action = None
+
+        if self.sm.current_state == State.FAILED:
+            self.sm.transition(State.IDLE, trigger="retry_after_failed")
+            self.slots = ErrandSlots()
+            self.proposed_action = None
+
+        # 5. Handle awaiting approval state deterministically via application code
         if self.sm.current_state == State.AWAITING_APPROVAL:
             approval_resp = self._handle_awaiting_approval(user_input)
             return self._finalize_turn(approval_resp)
 
-        # 5. Normal workflow turn driven by LLM NLU
+        # 6. Normal workflow turn driven by LLM NLU
         return self._finalize_turn(self._handle_llm_turn(user_input))
 
     def _finalize_turn(self, response_text: str) -> str:
@@ -583,6 +597,8 @@ class Orchestrator:
             "price": target.price,
             "service": target.service,
         }
+        if self.sm.current_state == State.IDLE:
+            self.sm.transition(State.CANCELLING, trigger="cancel_requested")
         self.sm.transition(State.AWAITING_APPROVAL, trigger="propose_cancellation")
         return f"Are you sure you want to cancel booking {target.booking_id} for {target.service} on {target.slot}? (Please reply yes/no)"
 
@@ -610,5 +626,7 @@ class Orchestrator:
             "price": target.price,
             "service": target.service,
         }
+        if self.sm.current_state == State.IDLE:
+            self.sm.transition(State.RESCHEDULING, trigger="reschedule_requested")
         self.sm.transition(State.AWAITING_APPROVAL, trigger="propose_reschedule")
         return f"Would you like to reschedule booking {target.booking_id} to Saturday 10:00 AM ({new_slot})? (Please reply yes/no)"

@@ -1,0 +1,72 @@
+[
+  {
+    "turn_id": 1,
+    "role": "user",
+    "text": "Hi, I moved to Koramangala recently."
+  },
+  {
+    "turn_id": 2,
+    "role": "assistant",
+    "text": "Welcome to Koramangala! I have noted your area preference."
+  },
+  {
+    "turn_id": 3,
+    "role": "user",
+    "text": "Can you help me arrange services for my apartment?"
+  },
+  {
+    "turn_id": 4,
+    "role": "assistant",
+    "text": "Certainly! I can help you find and book verified plumbers, electricians, and AC technicians."
+  },
+  {
+    "turn_id": 5,
+    "role": "user",
+    "text": "Do you need my approval before booking anything?"
+  },
+  {
+    "turn_id": 6,
+    "role": "assistant",
+    "text": "Yes, always. I will never perform any booking, cancellation, or reschedule without your explicit approval."
+  },
+  {
+    "turn_id": 7,
+    "role": "user",
+    "text": "I usually prefer morning slots before 12pm on weekdays."
+  },
+  {
+    "turn_id": 8,
+    "role": "assistant",
+    "text": "Noted! Morning weekday preference is saved to your memory."
+  },
+  {
+    "turn_id": 9,
+    "role": "user",
+    "text": "Also I have a pet dog at home."
+  },
+  {
+    "turn_id": 10,
+    "role": "assistant",
+    "text": "Understood. I will make sure technicians are aware of your pet."
+  },
+  {
+    "turn_id": 11,
+    "role": "user",
+    "text": "Thanks! Last week I booked an electrician named Sparky Electrical Works."
+  },
+  {
+    "turn_id": 12,
+    "role": "assistant",
+    "text": "Yes, your booking BKG-PAST-001 with Sparky Electrical Works is in your booking history."
+  },
+  {
+    "turn_id": 13,
+    "role": "user",
+    "text": "Great. What is my current budget limit for plumbing?"
+  },
+  {
+    "turn_id": 14,
+    "role": "assistant",
+    "text": "Your preferred plumbing budget is up to \u20b91,500."
+  }
+]
