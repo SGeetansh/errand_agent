@@ -94,3 +94,31 @@ def test_load_seed_memories_and_filter(memory_store: MemoryStore) -> None:
         assert f.status == "active"
         if f.provenance == "inferred":
             assert f.confirmed == 1
+
+
+def test_bug3_forget_command_natural_language_and_duplicates(memory_store: MemoryStore) -> None:
+    """Offline regression test for Bug 3: Natural language forget commands and duplicate deletion."""
+    from src.models.scripted import ScriptedModel
+    from src.orchestrator import Orchestrator
+    from src.tools.mock_env import MockEnvironment
+
+    orch = Orchestrator(llm=ScriptedModel(), mock_env=MockEnvironment(), memory=memory_store)
+
+    # 1. Store duplicate records with snake_case key
+    memory_store.store("preferred_area", "Indiranagar", provenance="explicit", confirmed=1)
+    memory_store.store("preferred_area", "Koramangala", provenance="explicit", confirmed=1)
+    memory_store.store("preferred_electrician", "Sparky", provenance="explicit", confirmed=1)
+
+    assert len([f for f in memory_store.get_active_facts() if f.fact == "preferred_area"]) == 2
+
+    # 2. Issue spaced natural language forget command "forget preferred area"
+    reply1 = orch.run_turn("forget preferred area")
+    assert "I have forgotten: preferred_area" in reply1
+
+    # Invariant: ALL duplicate records for preferred_area must be forgotten
+    assert not any(f.fact == "preferred_area" for f in memory_store.get_active_facts())
+
+    # 3. Issue natural language forget with filler word "forget my preferred electrician"
+    reply2 = orch.run_turn("forget my preferred electrician")
+    assert "I have forgotten: preferred_electrician" in reply2
+    assert not any(f.fact == "preferred_electrician" for f in memory_store.get_active_facts())

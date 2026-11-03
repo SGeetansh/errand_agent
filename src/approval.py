@@ -192,10 +192,20 @@ def detect_confirmation(user_text: str) -> Literal["confirmed", "denied", "ambig
         Literal['confirmed', 'denied', 'ambiguous']: Detected decision.
     """
     cleaned = user_text.strip().lower()
-    for token in CONFIRM_PATTERNS:
-        if cleaned == token or cleaned.startswith(f"{token} ") or cleaned.startswith(f"{token},"):
-            return "confirmed"
+
+    # Check for explicit denials first
     for token in DENY_PATTERNS:
         if cleaned == token or cleaned.startswith(f"{token} ") or cleaned.startswith(f"{token},"):
             return "denied"
+
+    # Check for explicit confirmations, ensuring no contradictory or hedging clauses follow
+    HEDGE_WORDS = {"but", "except", "not", "if", "unless", "however", "instead", "cheaper", "different"}
+    for token in CONFIRM_PATTERNS:
+        if cleaned == token or cleaned.startswith(f"{token} ") or cleaned.startswith(f"{token},"):
+            remainder = cleaned[len(token):].strip(" ,.")
+            remainder_words = set(remainder.replace(",", " ").replace(".", " ").split())
+            if remainder_words & HEDGE_WORDS:
+                return "ambiguous"
+            return "confirmed"
+
     return "ambiguous"
