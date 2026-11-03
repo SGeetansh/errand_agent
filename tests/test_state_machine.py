@@ -200,3 +200,10 @@ def test_illegal_transitions_raise_error() -> None:
     # Cannot jump directly to EXECUTING without HOLDING
     with pytest.raises(InvalidTransitionError):
         sm2.transition(State.EXECUTING)
+
+
+def test_done_to_proactive_transition() -> None:
+    """Test legal transition from DONE to PROACTIVE when provider cancels confirmed booking."""
+    sm = StateMachine(State.DONE)
+    assert sm.transition(State.PROACTIVE) == State.PROACTIVE
+

@@ -76,6 +76,7 @@ class Orchestrator:
         self.proposed_action: dict[str, Any] | None = None
         self.active_grant: ApprovalGrant | None = None
         self.last_search_results: list[ProviderSummary] = []
+        self.current_tool_results: list[Any] = []
 
         orig_transition = self.sm.transition
 
@@ -214,12 +215,22 @@ class Orchestrator:
             return "Here are the facts I currently remember:\n" + "\n".join(lines)
 
         if lower.startswith("forget "):
-            target = lower.replace("forget", "").replace("that i", "").strip()
+            raw_target = lower.replace("forget", "").replace("that i", "").replace("my", "").replace("about", "").strip()
+            target_norm = raw_target.replace(" ", "_")
+            forgotten: list[str] = []
             for f in self.memory.list_facts(self.user_id):
-                if target in f.fact.lower() or target in f.value.lower():
+                fact_norm = f.fact.lower().replace("_", " ")
+                if (
+                    raw_target in f.fact.lower()
+                    or target_norm in f.fact.lower()
+                    or raw_target in fact_norm
+                    or raw_target in f.value.lower()
+                ):
                     self.memory.forget(f.id)
-                    return f"I have forgotten: {f.fact}."
-            return f"I couldn't find any memory matching '{target}' to forget."
+                    forgotten.append(f.fact)
+            if forgotten:
+                return f"I have forgotten: {', '.join(sorted(set(forgotten)))}."
+            return f"I couldn't find any memory matching '{raw_target}' to forget."
 
         return None
 
@@ -476,13 +487,13 @@ class Orchestrator:
             state=self.sm.current_state.value,
             allowed_tools=allowed,
             slots=self.slots,
-            tool_results=[],
+            tool_results=self.current_tool_results,
             user_message=user_input,
         )
         self.tracer.log_event("context_manifest", turn_id=self.turn_id, context_manifest=asdict(manifest))
 
         resp = self.llm.generate(
-            messages=[{"role": "user", "content": user_input}],
+            messages=[{"role": "user", "content": prompt}],
             tools=allowed,
             turn_id=self.turn_id,
         )
@@ -491,7 +502,34 @@ class Orchestrator:
             turn_id=self.turn_id,
             message=resp.message,
             trigger=resp.intent,
+            model_name=resp.usage.get("model"),
+            prompt_tokens=resp.usage.get("prompt_tokens"),
+            completion_tokens=resp.usage.get("completion_tokens"),
+            latency_ms=resp.usage.get("latency_ms"),
         )
+
+        # Allow model to drive allowed non-mutating tools validated against allowlist
+        NON_MUTATING_TOOLS = {"get_provider", "search_providers", "list_bookings"}
+        for tc in resp.tool_calls:
+            tool_name = tc.get("name")
+            tool_args = tc.get("args", {})
+            if tool_name in allowed and tool_name in NON_MUTATING_TOOLS:
+                self.tracer.log_event("tool_call", turn_id=self.turn_id, tool_name=tool_name, tool_args=tool_args)
+                self.budget.record_tool_call(tool_name)
+                res: Any = None
+                if tool_name == "get_provider":
+                    res = self.mock_env.get_provider(tool_args.get("provider_id", ""))
+                elif tool_name == "search_providers":
+                    res = self.mock_env.search_providers(
+                        service=tool_args.get("service", self.slots.service or "plumber"),
+                        area=tool_args.get("area", self.slots.area or "Koramangala"),
+                        date_range=tool_args.get("date_range", self.slots.date_range or "this week"),
+                    )
+                elif tool_name == "list_bookings":
+                    res = self.mock_env.list_bookings(self.user_id)
+                if res is not None:
+                    self.current_tool_results.append(res)
+                    self.tracer.log_event("tool_result", turn_id=self.turn_id, tool_name=tool_name, tool_result=res)
 
         # Update slots
         if resp.slots:
@@ -536,10 +574,30 @@ class Orchestrator:
         if missing:
             if self.sm.current_state == State.IDLE:
                 self.sm.transition(State.CLARIFYING, trigger="missing_slots")
-            return resp.message or f"To help arrange this, could you please specify your {', '.join(missing)}?"
+            msg_lower = resp.message.lower() if resp.message else ""
+            has_premature_claim = any(
+                cue in msg_lower
+                for cue in [
+                    "have booked",
+                    "has been booked",
+                    "is booked",
+                    "was booked",
+                    "booked a",
+                    "booked the",
+                    "booking is confirmed",
+                    "booking has been confirmed",
+                    "has been confirmed",
+                    "is confirmed",
+                ]
+            )
+            missing_not_asked = not any(slot in msg_lower for slot in missing)
+            if not resp.message or has_premature_claim or (("booked" in msg_lower or "confirmed" in msg_lower) and missing_not_asked):
+                article = "an" if (self.slots.service or "").startswith(("a", "e", "i", "o", "u")) else "a"
+                return f"To help arrange {article} {self.slots.service or 'service'}, could you please specify your {', '.join(missing)}?"
+            return resp.message
 
         # All slots filled -> Search providers
-        if self.sm.current_state in (State.IDLE, State.CLARIFYING):
+        if self.sm.current_state in (State.IDLE, State.CLARIFYING, State.COMPARING):
             self.sm.transition(State.SEARCHING, trigger="slots_complete")
 
         self.budget.record_tool_call("search_providers")
@@ -562,6 +620,11 @@ class Orchestrator:
         top = providers[0]
         slot = top.available_slots[0] if top.available_slots else "2024-01-15T10:00:00"
 
+        # Fetch provider details and free-text reviews into current_tool_results
+        self.budget.record_tool_call("get_provider")
+        provider_detail = self.mock_env.get_provider(top.provider_id)
+        self.current_tool_results = [provider_detail]
+
         self.proposed_action = {
             "action": "book",
             "provider_id": top.provider_id,
@@ -572,9 +635,16 @@ class Orchestrator:
         }
         self.sm.transition(State.AWAITING_APPROVAL, trigger="propose_provider")
 
+        provider_lines = [
+            f"{i+1}. {p.name} ({p.rating}★, ₹{p.price:.2f})"
+            for i, p in enumerate(providers)
+        ]
+        providers_text = "\n".join(provider_lines)
+
         return (
-            f"I found {len(providers)} providers. I recommend {top.name} "
-            f"({top.rating}★, ₹{top.price:.2f}) on {slot}. "
+            f"I found {len(providers)} providers:\n"
+            f"{providers_text}\n\n"
+            f"I recommend {top.name} ({top.rating}★, ₹{top.price:.2f}) on {slot}. "
             "Shall I go ahead and book this for you? (Please reply yes/no)"
         )
 

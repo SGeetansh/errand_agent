@@ -104,6 +104,7 @@ VALID_TRANSITIONS: set[tuple[State, State]] = {
     (State.PROACTIVE, State.IDLE),
     # DONE transitions
     (State.DONE, State.IDLE),
+    (State.DONE, State.PROACTIVE),
     # FAILED transitions
     (State.FAILED, State.IDLE),
     # CLARIFYING / SEARCHING / COMPARING to IDLE
