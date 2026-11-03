@@ -47,8 +47,8 @@ Clone the repository and sync dependencies with `uv`:
 
 ```bash
 # Clone repository
-git clone <repo-url>
-cd agentic_orange
+git clone https://github.com/SGeetansh/errand_agent
+cd errand_agent
 
 # Sync dependencies and create virtual environment via uv
 uv sync
