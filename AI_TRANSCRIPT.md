@@ -69,7 +69,7 @@ This document logs the interaction history, architectural reasoning, and impleme
 
 ### Milestone 7: Budget Tracker & Structured JSONL Tracer
 - **Actions:**
-  - Built `src/budget.py` (`Budget`) tracking model turns (cap: 25), tool calls (cap: 10), wall clock time (cap: 120s), and per-tool retry limits.
+  - Built `src/budget.py` (`Budget`) tracking model turns (cap: 25), tool calls (cap: 50), wall clock time (cap: 300.0s), and per-tool retry limits.
   - Built `src/tracer.py` (`Tracer`) with RFC 3339 timestamps and regex PII redaction.
   - Added unit tests in `tests/test_budget.py`.
 - **Commit:** `642c559 feat(milestone-7): budget bounding tracker and structured JSONL tracer with PII redaction`

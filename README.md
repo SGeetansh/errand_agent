@@ -30,7 +30,7 @@ A production-grade, highly resilient conversational agent for home-service erran
 
 6. **Observability & Budget Tracking**:
    - Structured JSONL tracing with RFC 3339 timestamps and automatic PII redaction (phone numbers, email addresses).
-   - Multi-dimensional execution bounding: max 25 model turns, max 10 tool calls, 120s wall-clock timeout, and per-tool retry caps.
+   - Multi-dimensional execution bounding: max 25 model turns, max 50 tool calls, 300.0s wall-clock timeout, and per-tool retry caps.
 
 ---
 
