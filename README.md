@@ -1,4 +1,4 @@
-# Errand Agent — Home Services Conversational Assistant
+# Errand Agent - Home Services Conversational Assistant
 
 A production-grade, highly resilient conversational agent for home-service errands (plumber, AC servicing, electrician) designed according to robust distributed systems principles. Built with a deterministic finite state machine, cryptographic approval gate, SQLite WAL idempotency and recovery, persistent privacy-preserving memory, and bounded context management.
 
