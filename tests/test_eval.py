@@ -212,7 +212,7 @@ def test_s09_repeated_confirmation() -> None:
 def test_s10_timeout_after_success_actually_booked() -> None:
     """S10: Timeout after success (actually booked) — Deliverable Trace."""
     env = MockEnvironment(ScenarioConfig(force_book_outcome="timeout_booked"))
-    trace_path = "traces/s10_timeout_after_success.jsonl"
+    trace_path = "traces/s10_scripted.jsonl"
     if os.path.exists(trace_path):
         os.remove(trace_path)
     tracer = Tracer(trace_file=trace_path)
@@ -225,7 +225,7 @@ def test_s10_timeout_after_success_actually_booked() -> None:
 
     passed = "confirmed upstream after resolving timeout" in reply and orch.sm.current_state == State.DONE
     assert os.path.exists(trace_path)
-    record_result("S10", "Timeout after success (booked)", "Status checked, success reported, no retry", "Recovered and confirmed", passed, "Trace written to s10_timeout_after_success.jsonl", orch)
+    record_result("S10", "Timeout after success (booked)", "Status checked, success reported, no retry", "Recovered and confirmed", passed, "Trace written to s10_scripted.jsonl", orch)
 
 
 def test_s11_timeout_after_success_not_booked() -> None:

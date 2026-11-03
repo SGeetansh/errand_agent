@@ -11,7 +11,7 @@
 | S07: Price drift after hold | Old approval invalidated, re-approval requested | Re-approval requested | ✅ PASS | Price drift detected |
 | S08: Price drift accepted | Booking completes with new price | Confirmed with updated price | ✅ PASS | Fresh approval granted |
 | S09: Repeated confirmation | Exactly one booking created | Total bookings = 3 | ✅ PASS | Idempotent execution |
-| S10: Timeout after success (booked) | Status checked, success reported, no retry | Recovered and confirmed | ✅ PASS | Trace written to s10_timeout_after_success.jsonl |
+| S10: Timeout after success (booked) | Status checked, success reported, no retry | Recovered and confirmed | ✅ PASS | Trace written to s10_scripted.jsonl |
 | S11: Timeout after success (not booked) | Status checked, not booked, offered retry | Safely transitioned to SEARCHING | ✅ PASS | Verified not booked before retry |
 | S12: Slot conflict on reschedule | Slot conflict reported to user | Conflict reported | ✅ PASS | Handled slot_conflict |
 | S13: Cancel with transient 503 | Retry succeeds on 503 | Second attempt cancelled | ✅ PASS | Idempotent cancel retry |
