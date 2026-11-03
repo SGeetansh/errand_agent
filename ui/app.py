@@ -362,6 +362,18 @@ def render_chat_column() -> None:
                 f"- **Price:** ₹{p.get('price', 0.0):.2f}\n"
                 + (f"- **Booking ID:** `{p.get('booking_id')}`\n" if p.get("booking_id") else "")
             )
+            if orch.last_search_results:
+                with st.expander(f"📋 All Compared Providers ({len(orch.last_search_results)})", expanded=True):
+                    df_providers = pd.DataFrame([
+                        {
+                            "Provider": prov.name,
+                            "Rating": f"{prov.rating}★",
+                            "Price": f"₹{prov.price:.2f}",
+                            "Available Slots": len(prov.available_slots),
+                        }
+                        for prov in orch.last_search_results
+                    ])
+                    st.dataframe(df_providers, hide_index=True, width="stretch")
             st.caption("Side effects require explicit confirmation. Confirm or deny by replying:")
             col_y, col_n = st.columns(2)
             if col_y.button("Insert 'yes'", width="stretch"):
